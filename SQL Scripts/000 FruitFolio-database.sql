@@ -37,8 +37,6 @@ CREATE TABLE Product_comments (
 	Date_time TIMESTAMP NOT NULL
 );
 
-DROP TABLE Product_comments
-
 ALTER TABLE Product_sorts ADD CONSTRAINT Sorts_Types FOREIGN KEY (Product_type_id) REFERENCES Product_types (ID);
 
 ALTER TABLE Product_grades ADD CONSTRAINT Grades_Users FOREIGN KEY (User_id) REFERENCES Users (ID);
