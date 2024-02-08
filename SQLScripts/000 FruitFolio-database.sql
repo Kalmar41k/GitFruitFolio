@@ -30,7 +30,7 @@ CREATE TABLE Product_grades (
 CREATE TABLE Product_comments (
 	ID SERIAL PRIMARY KEY,
 	User_id integer NOT NULL,
-	Product_sort integer NOT NULL,
+	Product_sort_id integer NOT NULL,
 	Comment text NOT NULL,
 	Date_time TIMESTAMP NOT NULL
 );
@@ -43,6 +43,6 @@ ALTER TABLE Product_grades ADD CONSTRAINT Grades_Sorts FOREIGN KEY (Product_sort
 
 ALTER TABLE Product_comments ADD CONSTRAINT Comments_Users FOREIGN KEY (User_id) REFERENCES Users (ID);
 
-ALTER TABLE Product_comments ADD CONSTRAINT Comments_Sorts FOREIGN KEY (Product_sort) REFERENCES Product_sorts (ID);
+ALTER TABLE Product_comments ADD CONSTRAINT Comments_Sorts FOREIGN KEY (Product_sort_id) REFERENCES Product_sorts (ID);
 
 ALTER TABLE product_types ALTER COLUMN product_type TYPE integer UNIQUE
