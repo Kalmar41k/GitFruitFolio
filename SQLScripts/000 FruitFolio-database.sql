@@ -45,4 +45,3 @@ ALTER TABLE Product_comments ADD CONSTRAINT Comments_Users FOREIGN KEY (User_id)
 
 ALTER TABLE Product_comments ADD CONSTRAINT Comments_Sorts FOREIGN KEY (Product_sort_id) REFERENCES Product_sorts (ID);
 
-ALTER TABLE product_types ALTER COLUMN product_type TYPE integer UNIQUE
