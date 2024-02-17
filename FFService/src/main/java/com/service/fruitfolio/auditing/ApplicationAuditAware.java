@@ -25,4 +25,5 @@ public class ApplicationAuditAware implements AuditorAware<Integer> {
         User userPrincipal = (User) authentication.getPrincipal();
         return Optional.ofNullable(userPrincipal.getId());
     }
+
 }

@@ -1,14 +1,14 @@
 package com.service.fruitfolio.sort;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.service.fruitfolio.comment.Comment;
+import com.service.fruitfolio.grade.Grade;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -22,4 +22,9 @@ public class ProductSort {
     public ProductClassEnum enumClass;
     public String type;
     public String sort;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "productSort")
+    private List<Comment> comments;
+
 }
