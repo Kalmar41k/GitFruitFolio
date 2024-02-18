@@ -28,8 +28,8 @@ public class ProductSortController {
         return productSortService.getSortCommentsById(id);
     }
 
-//    @GetMapping("/sort_mean_grade/{id}")
-//    public Double getSortMeanGradeById(@PathVariable("id") Integer id) {
-//        return productSortService.getSortMeanGradeById(id);
-//    }
+    @GetMapping("/byId/{id}")
+    public ProductSort findById(@PathVariable("id") Integer id) {
+        return productSortService.findById(id);
+    }
 }

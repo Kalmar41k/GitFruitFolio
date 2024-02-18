@@ -10,4 +10,5 @@ public class ProductSortCreateRequest {
     private ProductClassEnum enumClass;
     private String type;
     private String sort;
+    private Double meanGrade;
 }

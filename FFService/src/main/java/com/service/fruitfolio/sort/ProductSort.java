@@ -18,13 +18,19 @@ public class ProductSort {
 
     @Id
     @GeneratedValue
-    public Integer id;
-    public ProductClassEnum enumClass;
-    public String type;
-    public String sort;
+    private Integer id;
+    private ProductClassEnum enumClass;
+    private String type;
+    private String sort;
 
     @JsonIgnore
     @OneToMany(mappedBy = "productSort")
     private List<Comment> comments;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "productSort")
+    private List<Grade> grades;
+
+    private Double meanGrade;
 
 }

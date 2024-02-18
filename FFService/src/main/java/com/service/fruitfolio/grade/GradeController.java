@@ -13,8 +13,8 @@ public class GradeController {
     private final GradeService gradeService;
 
     @PostMapping("/create")
-    public Grade create(@RequestBody Grade grade) {
-        return gradeService.create(grade);
+    public Grade create(@RequestBody GradeRequest gradeRequest) {
+        return gradeService.create(gradeRequest);
     }
 
     @GetMapping("/all")
@@ -22,8 +22,8 @@ public class GradeController {
         return gradeService.findAll();
     }
 
-    @GetMapping("/sort_mean_grade/{id}")
-    public Double getSortMeanGrade(@PathVariable("id") Integer id) {
-        return gradeService.getSortMeanGrade(id);
-    }
+//    @GetMapping("/sort_mean_grade/{id}")
+//    public Double getSortMeanGrade(@PathVariable("id") Integer id) {
+//        return gradeService.getSortMeanGrade(id);
+//    }
 }

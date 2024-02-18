@@ -1,5 +1,7 @@
 package com.service.fruitfolio.user;
 
+import com.service.fruitfolio.comment.Comment;
+import com.service.fruitfolio.grade.Grade;
 import com.service.fruitfolio.token.Token;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -38,6 +40,12 @@ public class User implements UserDetails {
 
   @OneToMany(mappedBy = "user")
   private List<Token> tokens;
+
+  @OneToMany(mappedBy = "user")
+  private List<Comment> comments;
+
+  @OneToMany(mappedBy = "user")
+  private List<Grade> grades;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

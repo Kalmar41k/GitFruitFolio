@@ -1,5 +1,8 @@
 package com.service.fruitfolio.grade;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.service.fruitfolio.sort.ProductSort;
+import com.service.fruitfolio.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,16 +19,18 @@ public class Grade {
 
     @Id
     @GeneratedValue
-    public Integer id;
+    private Integer id;
 
-    private Integer userId;
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "Grade_Sort_ID")
+    private ProductSort productSort;
 
-//    @ManyToOne
-//    @JoinColumn(name = "Grade_Sort_ID")
-//    private ProductSort productSort;
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "Grade_User_ID")
+    private User user;
 
-    private Integer productSortId;
-
-    public Integer grade;
+    private Integer grade;
 
 }

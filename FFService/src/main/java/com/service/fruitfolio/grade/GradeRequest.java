@@ -1,4 +1,4 @@
-package com.service.fruitfolio.comment;
+package com.service.fruitfolio.grade;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CommentRequest {
+public class GradeRequest {
 
     private Integer productSortId;
     private Integer userId;
-    private String text;
+    private Integer grade;
 }
