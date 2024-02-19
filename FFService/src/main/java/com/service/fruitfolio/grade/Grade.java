@@ -21,7 +21,6 @@ public class Grade {
     @GeneratedValue
     private Integer id;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "Grade_Sort_ID")
     private ProductSort productSort;

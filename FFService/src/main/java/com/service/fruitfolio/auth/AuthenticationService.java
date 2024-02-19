@@ -33,6 +33,10 @@ public class AuthenticationService {
     if (request.getRole() == null) {
       request.setRole(Role.USER);
     }
+    Optional<User> userByEmail = repository.findByEmail(request.getEmail());
+    if (userByEmail.isPresent()) {
+      throw new IllegalStateException("Email is already exist");
+    }
     var user = User.builder()
         .firstname(request.getFirstname())
         .lastname(request.getLastname())
