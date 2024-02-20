@@ -10,6 +10,5 @@ import lombok.NoArgsConstructor;
 public class CommentRequest {
 
     private Integer productSortId;
-    private Integer userId;
     private String text;
 }

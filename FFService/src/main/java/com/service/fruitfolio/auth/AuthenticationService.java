@@ -45,13 +45,10 @@ public class AuthenticationService {
         .role(request.getRole())
         .build();
     var savedUser = repository.save(user);
-    Optional<User> user1 = repository.findByEmail(user.getEmail());
-    var userId = user1.get().getId();
     var jwtToken = jwtService.generateToken(user);
     var refreshToken = jwtService.generateRefreshToken(user);
     saveUserToken(savedUser, jwtToken);
     return AuthenticationResponse.builder()
-            .userId(userId)
         .accessToken(jwtToken)
             .refreshToken(refreshToken)
         .build();
@@ -66,13 +63,11 @@ public class AuthenticationService {
     );
     var user = repository.findByEmail(request.getEmail())
         .orElseThrow();
-    var userId = user.getId();
     var jwtToken = jwtService.generateToken(user);
     var refreshToken = jwtService.generateRefreshToken(user);
     revokeAllUserTokens(user);
     saveUserToken(user, jwtToken);
     return AuthenticationResponse.builder()
-            .userId(userId)
         .accessToken(jwtToken)
             .refreshToken(refreshToken)
         .build();

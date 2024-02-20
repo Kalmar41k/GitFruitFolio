@@ -6,8 +6,10 @@ import com.service.fruitfolio.sort.ProductSortRepository;
 import com.service.fruitfolio.user.User;
 import com.service.fruitfolio.user.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,10 +21,12 @@ public class GradeService {
     private final UserRepository userRepository;
     private final ProductSortRepository productSortRepository;
 
-    public Grade create(GradeRequest gradeRequest) {
+    public Grade create(GradeRequest gradeRequest, Principal connectedUser) {
+
+        var user = (User) ((UsernamePasswordAuthenticationToken) connectedUser).getPrincipal();
 
         Grade grade = new Grade();
-        Optional<Grade> checkGrade = Optional.ofNullable(gradeRepository.findByUserId(gradeRequest.getUserId()));
+        Optional<Grade> checkGrade = Optional.ofNullable(gradeRepository.findByUserId(user.getId()));
         if (checkGrade.isPresent()) {
             grade = checkGrade.orElse(null);
             grade.setId(checkGrade.get().getId());
@@ -46,15 +50,12 @@ public class GradeService {
             return grade;
         }
         else {
-            Optional<User> user = userRepository.findById(gradeRequest.getUserId());
-            if (user.isEmpty()) {
-                return null;
-            }
+
             Optional<ProductSort> productSort = productSortRepository.findById(gradeRequest.getProductSortId());
             if (productSort.isEmpty()) {
                 return null;
             }
-            grade.setUser(user.orElse(null));
+            grade.setUser(user);
             grade.setProductSort(productSort.orElse(null));
             grade.setGrade(gradeRequest.getGrade());
             gradeRepository.save(grade);

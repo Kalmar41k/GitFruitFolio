@@ -19,14 +19,7 @@ public class ProductSortService {
     private final CommentService commentService;
     private final UserRepository userRepository;
 
-    public ProductSort create(ProductSortCreateRequest createRequest) {
-
-        ProductSort productSort = new ProductSort();
-
-        productSort.setEnumClass(createRequest.getEnumClass());
-        productSort.setType(createRequest.getType());
-        productSort.setSort(createRequest.getSort());
-        productSort.setMeanGrade(createRequest.getMeanGrade());
+    public ProductSort create(ProductSort productSort) {
         return productSortRepository.save(productSort);
     }
 
@@ -47,7 +40,6 @@ public class ProductSortService {
             user = userRepository.findById(user.get().getId());
             SortCommentsResponse sortCommentsResponse = new SortCommentsResponse();
             sortCommentsResponse.setId((comment.getId()));
-            sortCommentsResponse.setUserId(user.get().getId());
             sortCommentsResponse.setFirstname(user.get().getFirstname());
             sortCommentsResponse.setLastname(user.get().getLastname());
             sortCommentsResponse.setText(comment.getText());

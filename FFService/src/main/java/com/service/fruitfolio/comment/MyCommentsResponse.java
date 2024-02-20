@@ -1,21 +1,17 @@
-package com.service.fruitfolio.sort;
+package com.service.fruitfolio.comment;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.util.Date;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SortCommentsResponse {
+public class MyCommentsResponse {
 
-    private Integer id;
+    private int id;
     private String text;
-    private String firstname;
-    private String lastname;
     private LocalDateTime createDate;
 }

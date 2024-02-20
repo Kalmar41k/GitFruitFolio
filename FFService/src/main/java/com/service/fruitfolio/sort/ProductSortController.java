@@ -14,8 +14,8 @@ public class ProductSortController {
     private final ProductSortService productSortService;
 
     @PostMapping("/create")
-    public ProductSort create(@RequestBody ProductSortCreateRequest createRequest) {
-        return productSortService.create(createRequest);
+    public ProductSort create(@RequestBody ProductSort productSort) {
+        return productSortService.create(productSort);
     }
 
     @GetMapping("/all")
