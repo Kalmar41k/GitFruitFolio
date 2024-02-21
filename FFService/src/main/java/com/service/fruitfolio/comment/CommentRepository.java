@@ -1,7 +1,6 @@
 package com.service.fruitfolio.comment;
 
 import com.service.fruitfolio.sort.ProductSort;
-import com.service.fruitfolio.sort.ProductSortRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

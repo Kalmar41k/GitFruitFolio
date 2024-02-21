@@ -2,6 +2,8 @@ package com.service.fruitfolio.sort;
 
 import com.service.fruitfolio.comment.Comment;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,5 +33,10 @@ public class ProductSortController {
     @GetMapping("/byId/{id}")
     public ProductSort findById(@PathVariable("id") Integer id) {
         return productSortService.findById(id);
+    }
+
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<String> handleExceptionEmail(IllegalStateException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 }

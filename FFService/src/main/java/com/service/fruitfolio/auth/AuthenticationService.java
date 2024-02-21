@@ -35,7 +35,7 @@ public class AuthenticationService {
     }
     Optional<User> userByEmail = repository.findByEmail(request.getEmail());
     if (userByEmail.isPresent()) {
-      throw new IllegalStateException("Email is already exist");
+      throw new IllegalStateException("Email is already exist!");
     }
     var user = User.builder()
         .firstname(request.getFirstname())

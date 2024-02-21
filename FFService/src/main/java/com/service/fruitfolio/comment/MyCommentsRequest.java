@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MyCommentsRequest {
-    private int id;
+    private int productSortId;
 }

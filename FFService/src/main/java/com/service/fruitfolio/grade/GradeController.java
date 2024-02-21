@@ -1,6 +1,8 @@
 package com.service.fruitfolio.grade;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -23,8 +25,8 @@ public class GradeController {
         return gradeService.findAll();
     }
 
-//    @GetMapping("/sort_mean_grade/{id}")
-//    public Double getSortMeanGrade(@PathVariable("id") Integer id) {
-//        return gradeService.getSortMeanGrade(id);
-//    }
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<String> handleExceptionEmail(IllegalStateException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
 }

@@ -30,7 +30,7 @@ public class ProductSortService {
     public List<SortCommentsResponse> getSortCommentsById(Integer id) {
         Optional<ProductSort> productSort = productSortRepository.findById(id);
         if (productSort.isEmpty()) {
-            return null;
+            throw new IllegalStateException("Product Sort is not found!");
         }
         List<Comment> comments = commentService.getSortComments(productSort.orElse(null));
         List<SortCommentsResponse> sortComments = new ArrayList<>();
@@ -52,7 +52,7 @@ public class ProductSortService {
     public ProductSort findById(Integer id) {
         Optional<ProductSort> optionalProductSort = productSortRepository.findById(id);
         if (optionalProductSort.isEmpty()) {
-            throw new IllegalStateException("Product Comment with id " + id + " does not exist");
+            throw new IllegalStateException("Product Sort is not found!");
         }
         return optionalProductSort.get();
     }

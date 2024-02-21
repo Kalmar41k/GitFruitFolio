@@ -1,6 +1,5 @@
 package com.service.fruitfolio.grade;
 
-import com.service.fruitfolio.comment.Comment;
 import com.service.fruitfolio.sort.ProductSort;
 import com.service.fruitfolio.sort.ProductSortRepository;
 import com.service.fruitfolio.user.User;
@@ -18,7 +17,6 @@ import java.util.Optional;
 public class GradeService {
 
     private final GradeRepository gradeRepository;
-    private final UserRepository userRepository;
     private final ProductSortRepository productSortRepository;
 
     public Grade create(GradeRequest gradeRequest, Principal connectedUser) {
@@ -35,7 +33,7 @@ public class GradeService {
 
             Optional<ProductSort> productSort = productSortRepository.findById(gradeRequest.getProductSortId());
             if (productSort.isEmpty()) {
-                return null;
+                throw new IllegalStateException("Product Sort is not found!");
             }
             ProductSort productSort1;
             productSort1 = productSort.orElse(null);
@@ -53,7 +51,7 @@ public class GradeService {
 
             Optional<ProductSort> productSort = productSortRepository.findById(gradeRequest.getProductSortId());
             if (productSort.isEmpty()) {
-                return null;
+                throw new IllegalStateException("Product Sort is not found!");
             }
             grade.setUser(user);
             grade.setProductSort(productSort.orElse(null));

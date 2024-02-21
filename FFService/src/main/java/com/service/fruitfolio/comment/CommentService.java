@@ -2,14 +2,12 @@ package com.service.fruitfolio.comment;
 
 import com.service.fruitfolio.sort.ProductSort;
 import com.service.fruitfolio.sort.ProductSortRepository;
-import com.service.fruitfolio.sort.ProductSortService;
-import com.service.fruitfolio.sort.SortCommentsResponse;
 import com.service.fruitfolio.user.User;
-import com.service.fruitfolio.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 
+import javax.naming.NameNotFoundException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +19,6 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
     private final ProductSortRepository productSortRepository;
-    private final UserRepository userRepository;
 
     public Comment create(CommentRequest commentRequest, Principal connectedUser) {
         var user = (User) ((UsernamePasswordAuthenticationToken) connectedUser).getPrincipal();
@@ -29,7 +26,7 @@ public class CommentService {
 
         Optional<ProductSort> productSort = productSortRepository.findById(commentRequest.getProductSortId());
         if (productSort.isEmpty()) {
-            return null;
+            throw new IllegalStateException("Product Sort is not found");
         }
         comment.setUser(user);
         comment.setProductSort(productSort.orElse(null));
@@ -43,9 +40,9 @@ public class CommentService {
 
     public List<MyCommentsResponse> getMyComments(MyCommentsRequest myCommentsRequest, Principal connectedUser) {
         var user = (User) ((UsernamePasswordAuthenticationToken) connectedUser).getPrincipal();
-        Optional<ProductSort> productSort = productSortRepository.findById(myCommentsRequest.getId());
+        Optional<ProductSort> productSort = productSortRepository.findById(myCommentsRequest.getProductSortId());
         if (productSort.isEmpty()) {
-            return null;
+            throw new IllegalStateException("Product Sort is not found!");
         }
 
         List<Comment> comments = getSortComments(productSort.orElse(null));
@@ -70,6 +67,10 @@ public class CommentService {
 
 
     public String deleteCommentById(Integer id) {
+        Optional<Comment> comment = commentRepository.findById(id);
+        if (comment.isEmpty()) {
+            throw new IllegalStateException("Comment is not found!");
+        }
         commentRepository.deleteById(id);
         return "OK";
     }
