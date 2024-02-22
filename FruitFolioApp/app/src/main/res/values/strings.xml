@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">FruitFolio</string>
+    <string name="background">background</string>
+    <string name="email">Email</string>
+    <string name="firstname">Firstname</string>
+    <string name="lastname">Lastname</string>
+    <string name="password">Password</string>
+    <string name="sign_up">Sign up</string>
+    <string name="sign_in">Sign in</string>
+    <string name="fruitfolio">FruitFolio</string>
+    <string name="fruits">FRUITS</string>
+    <string name="vegetables">VEGETABLES</string>
+</resources>
