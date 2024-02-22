@@ -26,6 +26,8 @@
         </activity>
         
         <activity android:name=".ProductClassesActivity" />
+
+        <activity android:name=".SignInActivity" />
         
     </application>
 

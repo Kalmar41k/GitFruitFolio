@@ -1,60 +1,58 @@
 package com.example.fruitfolio
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import com.example.fruitfolio.databinding.ActivityMainBinding
+import androidx.appcompat.app.AppCompatActivity
+import com.example.fruitfolio.databinding.SignInBinding
+import com.example.fruitfolio.retrofit.AuthenticateRequest
 import com.example.fruitfolio.retrofit.MainApi
-import com.example.fruitfolio.retrofit.RegisterRequest
 import com.example.fruitfolio.retrofit.RetrofitService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.net.HttpURLConnection
 
-class MainActivity : AppCompatActivity() {
+class SignInActivity : AppCompatActivity() {
 
-    lateinit var binding: ActivityMainBinding
+    lateinit var binding: SignInBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = SignInBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.signUpButton.setOnClickListener {
-            val firstName = binding.firstNameText.text.toString()
-            val lastName = binding.lastNameText.text.toString()
+        binding.signInButton.setOnClickListener {
             val email = binding.emailText.text.toString()
             val password = binding.textPassword.text.toString()
 
-            val registerRequest = RegisterRequest(firstName, lastName, email, password)
+            val authenticateRequest = AuthenticateRequest(email, password)
 
-            registerUser(registerRequest)
-
+            authUser(authenticateRequest)
         }
 
-        binding.signInButton.setOnClickListener {signIn()}
+        binding.signUpButton.setOnClickListener {signUp()}
     }
 
-    private fun registerUser(registerRequest: RegisterRequest) {
+    private fun authUser(authenticateRequest: AuthenticateRequest) {
+
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val response = RetrofitService.retrofit.create(MainApi::class.java).register(registerRequest)
+                val response = RetrofitService.retrofit.create(MainApi::class.java).authenticate(authenticateRequest)
                 if (response.isSuccessful) {
                     val userResponse = response.body()
-                    Log.d("MainActivity", "UserResponse: $userResponse")
+                    Log.d("SignInActivity", "UserResponse: $userResponse")
                     userResponse?.let {
-                        val intent = Intent(this@MainActivity,
+                        val intent = Intent(this@SignInActivity,
                             ProductClassesActivity::class.java)
                         intent.putExtra("userResponse", userResponse)
                         startActivity(intent)
                         finish()
                     }
                 } else {
-                    if (response.code() == HttpURLConnection.HTTP_CONFLICT) {
+                    if (response.code() == HttpURLConnection.HTTP_FORBIDDEN) {
                         runOnUiThread {
-                            binding.emailText.error = "This email is already exist!"
+                            binding.emailText.error = "Email or password incorrect!"
                         }
                     }
                 }
@@ -65,9 +63,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun signIn() {
-        val intent = Intent(this@MainActivity,
-            SignInActivity::class.java)
+    private fun signUp() {
+        val intent = Intent(this@SignInActivity,
+            MainActivity::class.java)
         startActivity(intent)
         finish()
     }

@@ -35,6 +35,11 @@ public class ProductSortController {
         return productSortService.findById(id);
     }
 
+    @GetMapping("/byProductClass/{productClass}")
+    public List<ProductSort> findByProductClass(@PathVariable("productClass") String productClass) {
+        return productSortService.findByProductClass(productClass);
+    }
+
     @ExceptionHandler(IllegalStateException.class)
     public ResponseEntity<String> handleExceptionEmail(IllegalStateException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);

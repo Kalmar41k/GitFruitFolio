@@ -56,4 +56,8 @@ public class ProductSortService {
         }
         return optionalProductSort.get();
     }
+
+    public List<ProductSort> findByProductClass(String productClass) {
+        return productSortRepository.findByEnumClass(ProductClassEnum.valueOf(productClass));
+    }
 }
