@@ -28,6 +28,10 @@
         <activity android:name=".ProductClassesActivity" />
 
         <activity android:name=".SignInActivity" />
+
+        <activity android:name=".ProductsActivity" />
+
+        <activity android:name=".ProductDetailsActivity" />
         
     </application>
 

@@ -8,6 +8,7 @@ import com.example.fruitfolio.databinding.ProductClassesBinding
 import com.example.fruitfolio.retrofit.MainApi
 import com.example.fruitfolio.retrofit.RetrofitService
 import com.example.fruitfolio.retrofit.UserResponse
+import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -26,6 +27,8 @@ class ProductClassesActivity : AppCompatActivity() {
         userResponse = intent.getSerializableExtra("userResponse") as? UserResponse
 
         binding.fruitsTextView.setOnClickListener { getProducts(ProductClasses.Fruit) }
+        binding.vegetablesTextView.setOnClickListener { getProducts(ProductClasses.Vegetable) }
+        binding.berriesTextView.setOnClickListener { getProducts(ProductClasses.Berry) }
     }
 
     private fun getProducts(productClass: ProductClasses) {
@@ -34,22 +37,30 @@ class ProductClassesActivity : AppCompatActivity() {
                 val response = RetrofitService.retrofit.create(MainApi::class.java)
                     .getProducts(productClass.name, "Bearer ${userResponse?.accessToken}")
                 if (response.isSuccessful) {
-                    val productList = response.body()
-                    Log.d("ProductClassesActivity", "Products: $productList")
-                    productList?.let {
-                        val intent = Intent(this@ProductClassesActivity, MainActivity::class.java)
+                    val productsList = response.body()
+                    Log.d("ProductClassesActivity", "Products: $productsList")
+                    productsList?.let {
+                        val productsJson = Gson().toJson(productsList)
+                        val intent = Intent(this@ProductClassesActivity, ProductsActivity::class.java)
+                        intent.putExtra("userResponse", userResponse)
+                        intent.putExtra("productsJson", productsJson)
                         startActivity(intent)
                         finish()
                     }
                 } else {
-                    binding.fruitFolioTextView.text = "Error"
+                    auth()
                 }
             }
             catch (e: Exception) {
                 e.printStackTrace()
             }
         }
-        startActivity(Intent(this@ProductClassesActivity, MainActivity::class.java))
+    }
+
+    private fun auth() {
+        val intent = Intent(this@ProductClassesActivity, SignInActivity::class.java)
+        startActivity(intent)
         finish()
     }
 }
+

@@ -11,4 +11,16 @@
     <string name="fruits">FRUITS</string>
     <string name="vegetables">VEGETABLES</string>
     <string name="berries">BERRIES</string>
+    <string name="product_type">Product Type</string>
+    <string name="product_class">Product Class</string>
+    <string name="product_sort">Product Sort</string>
+    <string name="_0_0">0,0</string>
+    <string name="comments">Comments</string>
+    <string name="my_comments">My comments</string>
+    <string name="star_1">Star 1</string>
+    <string name="star_2">Star 2</string>
+    <string name="star_3">Star 3</string>
+    <string name="star_4">Star 4</string>
+    <string name="star_5">Star 5</string>
+    <string name="home">Home</string>
 </resources>

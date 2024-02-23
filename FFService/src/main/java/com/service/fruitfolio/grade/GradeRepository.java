@@ -11,5 +11,7 @@ public interface GradeRepository extends JpaRepository<Grade, Integer> {
 
     Grade findByUserId(Integer id);
 
+    Grade findByUserIdAndProductSortId(Integer userId, Integer productSortId);
+
     List<Grade> getByProductSort(ProductSort productSort);
 }

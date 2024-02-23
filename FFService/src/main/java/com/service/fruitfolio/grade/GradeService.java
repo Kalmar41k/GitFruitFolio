@@ -19,12 +19,12 @@ public class GradeService {
     private final GradeRepository gradeRepository;
     private final ProductSortRepository productSortRepository;
 
-    public Grade create(GradeRequest gradeRequest, Principal connectedUser) {
+    public Double create(GradeRequest gradeRequest, Principal connectedUser) {
 
         var user = (User) ((UsernamePasswordAuthenticationToken) connectedUser).getPrincipal();
 
         Grade grade = new Grade();
-        Optional<Grade> checkGrade = Optional.ofNullable(gradeRepository.findByUserId(user.getId()));
+        Optional<Grade> checkGrade = Optional.ofNullable(gradeRepository.findByUserIdAndProductSortId(user.getId(), gradeRequest.getProductSortId()));
         if (checkGrade.isPresent()) {
             grade = checkGrade.orElse(null);
             grade.setId(checkGrade.get().getId());
@@ -45,7 +45,7 @@ public class GradeService {
             Double meanGrade = (double) sumGrades / grades.size();
             productSort1.setMeanGrade(meanGrade);
             productSortRepository.save(productSort1);
-            return grade;
+            return meanGrade;
         }
         else {
 
@@ -68,7 +68,7 @@ public class GradeService {
             Double meanGrade = (double) sumGrades / grades.size();
             productSort1.setMeanGrade(meanGrade);
             productSortRepository.save(productSort1);
-            return grade;
+            return meanGrade;
         }
 
     }

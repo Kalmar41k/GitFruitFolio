@@ -16,7 +16,7 @@ public class GradeController {
     private final GradeService gradeService;
 
     @PostMapping("/create")
-    public Grade create(@RequestBody GradeRequest gradeRequest, Principal connectedUser) {
+    public Double create(@RequestBody GradeRequest gradeRequest, Principal connectedUser) {
         return gradeService.create(gradeRequest, connectedUser);
     }
 

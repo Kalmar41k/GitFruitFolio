@@ -19,4 +19,9 @@ interface MainApi {
         @Path("productClass") productClass: String,
         @Header("Authorization") authorization: String
     ): Response<List<Product>>
+
+    @POST("grades/create")
+    suspend fun createGrade(@Body gradeRequest: GradeRequest,
+                            @Header("Authorization") authorization: String
+    ): Response<Double>
 }
