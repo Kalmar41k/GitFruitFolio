@@ -2,6 +2,7 @@ package com.service.fruitfolio.comment;
 
 import com.service.fruitfolio.sort.ProductSort;
 import com.service.fruitfolio.sort.ProductSortRepository;
+import com.service.fruitfolio.sort.SortCommentsResponse;
 import com.service.fruitfolio.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,7 +21,7 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final ProductSortRepository productSortRepository;
 
-    public Comment create(CommentRequest commentRequest, Principal connectedUser) {
+    public SortCommentsResponse create(CommentRequest commentRequest, Principal connectedUser) {
         var user = (User) ((UsernamePasswordAuthenticationToken) connectedUser).getPrincipal();
         Comment comment = new Comment();
 
@@ -31,7 +32,15 @@ public class CommentService {
         comment.setUser(user);
         comment.setProductSort(productSort.orElse(null));
         comment.setText(commentRequest.getText());
-        return commentRepository.save(comment);
+        commentRepository.save(comment);
+
+        SortCommentsResponse sortCommentsResponse = new SortCommentsResponse();
+        sortCommentsResponse.setId(comment.getId());
+        sortCommentsResponse.setFirstname(user.getFirstname());
+        sortCommentsResponse.setLastname(user.getLastname());
+        sortCommentsResponse.setText(comment.getText());
+        sortCommentsResponse.setCreateDate(comment.getCreateDate());
+        return sortCommentsResponse;
     }
 
     public List<Comment> findAll() {

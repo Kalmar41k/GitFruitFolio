@@ -13,7 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.net.HttpURLConnection
 
-class MainActivity : AppCompatActivity() {
+class RegisterActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
 
@@ -28,12 +28,24 @@ class MainActivity : AppCompatActivity() {
             val email = binding.emailText.text.toString()
             val password = binding.textPassword.text.toString()
 
-            val registerRequest = RegisterRequest(firstName, lastName, email, password)
-
-            registerUser(registerRequest)
-
+            if (firstName.isNotEmpty() && lastName.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty()) {
+                val registerRequest = RegisterRequest(firstName, lastName, email, password)
+                registerUser(registerRequest)
+            } else {
+                if (firstName.isEmpty()) {
+                    binding.firstNameText.error = "All fields must be filled!"
+                }
+                if (lastName.isEmpty()) {
+                    binding.lastNameText.error = "All fields must be filled!"
+                }
+                if (email.isEmpty()) {
+                    binding.emailText.error = "All fields must be filled!"
+                }
+                if (password.isEmpty()) {
+                    binding.textPassword.error = "All fields must be filled!"
+                }
+            }
         }
-
         binding.signInButton.setOnClickListener {signIn()}
     }
 
@@ -43,9 +55,9 @@ class MainActivity : AppCompatActivity() {
                 val response = RetrofitService.retrofit.create(MainApi::class.java).register(registerRequest)
                 if (response.isSuccessful) {
                     val userResponse = response.body()
-                    Log.d("MainActivity", "UserResponse: $userResponse")
+                    Log.d("RegisterActivity", "UserResponse: $userResponse")
                     userResponse?.let {
-                        val intent = Intent(this@MainActivity,
+                        val intent = Intent(this@RegisterActivity,
                             ProductClassesActivity::class.java)
                         intent.putExtra("userResponse", userResponse)
                         startActivity(intent)
@@ -66,7 +78,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun signIn() {
-        val intent = Intent(this@MainActivity,
+        val intent = Intent(this@RegisterActivity,
             SignInActivity::class.java)
         startActivity(intent)
         finish()

@@ -1,5 +1,6 @@
 package com.service.fruitfolio.comment;
 
+import com.service.fruitfolio.sort.SortCommentsResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,7 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("/create")
-    public Comment create(@RequestBody CommentRequest commentRequest, Principal connectedUser) {
+    public SortCommentsResponse create(@RequestBody CommentRequest commentRequest, Principal connectedUser) {
         return commentService.create(commentRequest, connectedUser);
     }
 

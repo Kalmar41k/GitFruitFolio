@@ -47,16 +47,6 @@
         app:layout_constraintTop_toBottomOf="@id/view">
 
         <TextView
-            android:id="@+id/textViewProductSort"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="20dp"
-            android:text="@string/product_sort"
-            android:textColor="#147049"
-            android:textSize="40sp" />
-
-        <TextView
             android:id="@+id/textViewProductType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -65,6 +55,16 @@
             android:text="@string/product_type"
             android:textColor="#147049"
             android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/textViewProductSort"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingBottom="10dp"
+            android:text="@string/product_sort"
+            android:textColor="#147049"
+            android:textSize="40sp" />
 
         <LinearLayout
             android:id="@+id/ratingLayout"
@@ -114,15 +114,38 @@
                 android:contentDescription="@string/star_5"/>
         </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/gradeLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textViewRating"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingBottom="10dp"
+            android:paddingEnd="10dp"
+            android:paddingStart="10dp"
+            android:text="@string/rating"
+            android:textColor="#147049"
+            android:textSize="30sp"/>
+
         <TextView
             android:id="@+id/textViewMeanGrade"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:paddingBottom="10dp"
+            android:paddingEnd="10dp"
+            android:paddingStart="10dp"
             android:text="@string/_0_0"
             android:textColor="#147049"
             android:textSize="30sp"/>
+
+    </LinearLayout>
 
         <View
             android:layout_width="match_parent"
@@ -175,6 +198,43 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:padding="16dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/writeCommentEditText"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:inputType="text"
+                android:textSize="18sp"
+                android:imeOptions="actionDone"
+                android:hint="@string/write"
+                android:textColorHint="#88147049"
+                android:textColor="#147049"
+                android:layout_margin="10dp"
+                android:gravity="center_vertical"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:background="@drawable/login_text_field_background"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewTransparent"
+                android:importantForAutofill="no" />
+
+            <ImageView
+                android:id="@+id/sendImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/send"
+                android:layout_gravity="center"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 

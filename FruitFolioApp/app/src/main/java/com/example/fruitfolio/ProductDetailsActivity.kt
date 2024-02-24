@@ -1,19 +1,26 @@
 package com.example.fruitfolio
 
 import android.content.Intent
+import android.content.Context
+import android.view.inputmethod.InputMethodManager
 import android.os.Bundle
 import android.util.Log
+import android.view.inputmethod.EditorInfo
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fruitfolio.databinding.ProductDetailsBinding
+import com.example.fruitfolio.retrofit.CommentRequest
+import com.example.fruitfolio.retrofit.CommentResponse
 import com.example.fruitfolio.retrofit.GradeRequest
 import com.example.fruitfolio.retrofit.MainApi
+import com.example.fruitfolio.retrofit.MyCommentRequest
+import com.example.fruitfolio.retrofit.MyCommentResponse
 import com.example.fruitfolio.retrofit.Product
 import com.example.fruitfolio.retrofit.RetrofitService
 import com.example.fruitfolio.retrofit.UserResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.net.HttpURLConnection
 
 class ProductDetailsActivity : AppCompatActivity() {
 
@@ -21,6 +28,8 @@ class ProductDetailsActivity : AppCompatActivity() {
 
     private var userResponse: UserResponse? = null
     private var product: Product? = null
+    private var comments: List<CommentResponse>? = null
+    private var myComments: List<MyCommentResponse>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +42,44 @@ class ProductDetailsActivity : AppCompatActivity() {
         binding.textViewProductSort.text = product?.sort ?: "Product sort"
         binding.textViewProductType.text = product?.type ?: "Product type"
         binding.textViewMeanGrade.text = product?.let { String.format("%.1f", it.meanGrade) }
+
+        val layoutManager = LinearLayoutManager(this)
+        layoutManager.reverseLayout = true
+        layoutManager.stackFromEnd = true
+        binding.recyclerViewComments.layoutManager = layoutManager
+        getComments()
+
+        binding.textViewMyComments.setOnClickListener{ getMyComments() }
+
+        binding.textViewComments.setOnClickListener{ getComments() }
+
+        binding.sendImageView.setOnClickListener {
+            val checkText = binding.writeCommentEditText.text.toString()
+            if (checkText.isEmpty()) {
+                binding.writeCommentEditText.error = "Write some text!"
+            }
+            else {
+                val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodManager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+                addComment()
+            }
+        }
+
+        binding.writeCommentEditText.setOnEditorActionListener { textView, actionId, keyEvent ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                val checkText = binding.writeCommentEditText.text.toString()
+                if (checkText.isEmpty()) {
+                    binding.writeCommentEditText.error = "Write some text!"
+                }
+                else {
+                    val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    inputMethodManager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+                    addComment()
+                }
+                return@setOnEditorActionListener true
+            }
+            return@setOnEditorActionListener false
+        }
 
         if (userResponse != null) {
             binding.imageViewHome.setOnClickListener {
@@ -86,11 +133,93 @@ class ProductDetailsActivity : AppCompatActivity() {
         }
     }
 
+    private fun getComments() {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val response = RetrofitService.retrofit.create(MainApi::class.java)
+                    .getComments(product!!.id, "Bearer ${userResponse?.accessToken}")
+                if (response.isSuccessful) {
+                    comments = response.body()
+                    runOnUiThread {
+                        binding.recyclerViewComments.adapter = CommentsAdapter(comments!!)
+                    }
+                } else {
+                    auth()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private fun getMyComments() {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val myCommentRequest = MyCommentRequest(product!!.id)
+                val response = RetrofitService.retrofit.create(MainApi::class.java)
+                    .getMyComments(myCommentRequest, "Bearer ${userResponse?.accessToken}")
+                if (response.isSuccessful) {
+                    myComments = response.body()
+                    runOnUiThread {
+                        binding.recyclerViewComments.adapter = MyCommentsAdapter(myComments!!) {
+                            comment -> deleteMyComment(comment)
+                        }
+                    }
+                } else {
+                    auth()
+                }
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private fun addComment() {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val text = binding.writeCommentEditText.text.toString()
+                val commentRequest = CommentRequest(product!!.id, text)
+                val response = RetrofitService.retrofit.create(MainApi::class.java)
+                    .createComment(commentRequest, "Bearer ${userResponse?.accessToken}")
+                if (response.isSuccessful) {
+                    runOnUiThread {
+                        getComments()
+                        binding.writeCommentEditText.text.clear()
+                    }
+                } else {
+                    auth()
+                }
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private fun deleteMyComment(comment: MyCommentResponse) {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val response = RetrofitService.retrofit.create(MainApi::class.java)
+                    .deleteMyComment(comment.id, "Bearer ${userResponse?.accessToken}")
+                if (response.isSuccessful) {
+                    runOnUiThread {
+                        getMyComments()
+                    }
+                } else {
+                    auth()
+                }
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
     private fun createGrade(productSortId: Int, grade: Int) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val gradeRequest = GradeRequest(productSortId, grade)
-                Log.d("ProductDetailsActivity", "$gradeRequest")
                 val response = RetrofitService.retrofit.create(MainApi::class.java)
                     .createGrade(gradeRequest, "Bearer ${userResponse?.accessToken}")
                 if (response.isSuccessful) {

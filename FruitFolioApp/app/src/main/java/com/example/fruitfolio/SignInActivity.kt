@@ -25,10 +25,17 @@ class SignInActivity : AppCompatActivity() {
         binding.signInButton.setOnClickListener {
             val email = binding.emailText.text.toString()
             val password = binding.textPassword.text.toString()
-
-            val authenticateRequest = AuthenticateRequest(email, password)
-
-            authUser(authenticateRequest)
+            if (email.isNotEmpty() && password.isNotEmpty()) {
+                val authenticateRequest = AuthenticateRequest(email, password)
+                authUser(authenticateRequest)
+            } else {
+                if (email.isEmpty()) {
+                    binding.emailText.error = "All fields must be filled!"
+                }
+                if (password.isEmpty()) {
+                    binding.textPassword.error = "All fields must be filled!"
+                }
+            }
         }
 
         binding.signUpButton.setOnClickListener {signUp()}
@@ -52,7 +59,7 @@ class SignInActivity : AppCompatActivity() {
                 } else {
                     if (response.code() == HttpURLConnection.HTTP_FORBIDDEN) {
                         runOnUiThread {
-                            binding.emailText.error = "Email or password incorrect!"
+                            binding.emailText.error = "Wrong email or password!"
                         }
                     }
                 }
@@ -65,7 +72,7 @@ class SignInActivity : AppCompatActivity() {
 
     private fun signUp() {
         val intent = Intent(this@SignInActivity,
-            MainActivity::class.java)
+            RegisterActivity::class.java)
         startActivity(intent)
         finish()
     }
