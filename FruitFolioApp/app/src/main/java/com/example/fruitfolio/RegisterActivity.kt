@@ -4,7 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import com.example.fruitfolio.databinding.ActivityMainBinding
+import com.example.fruitfolio.databinding.RegisterBinding
 import com.example.fruitfolio.retrofit.MainApi
 import com.example.fruitfolio.retrofit.RegisterRequest
 import com.example.fruitfolio.retrofit.RetrofitService
@@ -15,11 +15,11 @@ import java.net.HttpURLConnection
 
 class RegisterActivity : AppCompatActivity() {
 
-    lateinit var binding: ActivityMainBinding
+    lateinit var binding: RegisterBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = RegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         binding.signUpButton.setOnClickListener {

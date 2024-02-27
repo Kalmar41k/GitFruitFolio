@@ -33,6 +33,7 @@ public class Comment {
     @JoinColumn(name = "comment_user_id")
     private User user;
 
+    @Column(nullable = false)
     private String text;
 
     @Column(nullable = false)

@@ -8,6 +8,8 @@ import java.util.List;
 @Repository
 public interface ProductSortRepository extends JpaRepository<ProductSort, Integer> {
 
+    ProductSort findByDescription(String desctiption);
+
     List<ProductSort> findByEnumClass(ProductClassEnum enumClass);
 
 }

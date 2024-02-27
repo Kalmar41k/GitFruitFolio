@@ -30,6 +30,7 @@ public class Grade {
     @JoinColumn(name = "Grade_User_ID")
     private User user;
 
+    @Column(nullable = false)
     private Integer grade;
 
 }

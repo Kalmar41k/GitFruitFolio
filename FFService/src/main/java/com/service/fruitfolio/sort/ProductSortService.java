@@ -57,6 +57,15 @@ public class ProductSortService {
         return optionalProductSort.get();
     }
 
+    public ProductSort findByDesctiption(ProductDescriptionRequest descriptionRequest) {
+        Optional<ProductSort> productSort = Optional.ofNullable(productSortRepository
+                .findByDescription(descriptionRequest.getDescription()));
+        if (productSort.isEmpty()) {
+            throw new IllegalStateException("Product Sort is not found!");
+        }
+        return productSort.get();
+    }
+
     public List<ProductSort> findByProductClass(String productClass) {
         return productSortRepository.findByEnumClass(ProductClassEnum.valueOf(productClass));
     }

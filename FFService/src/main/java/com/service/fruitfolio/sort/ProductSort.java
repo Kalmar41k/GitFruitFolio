@@ -19,9 +19,18 @@ public class ProductSort {
     @Id
     @GeneratedValue
     private Integer id;
+
+    @Column(nullable = false)
     private ProductClassEnum enumClass;
+
+    @Column(nullable = false)
     private String type;
+
+    @Column(nullable = false)
     private String sort;
+
+    @Column(nullable = false)
+    private String description;
 
     @JsonIgnore
     @OneToMany(mappedBy = "productSort")
@@ -31,6 +40,7 @@ public class ProductSort {
     @OneToMany(mappedBy = "productSort")
     private List<Grade> grades;
 
+    @Column(nullable = false)
     private Double meanGrade;
 
 }

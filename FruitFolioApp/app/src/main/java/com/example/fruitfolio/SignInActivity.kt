@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.fruitfolio.databinding.SignInBinding
 import com.example.fruitfolio.retrofit.AuthenticateRequest
 import com.example.fruitfolio.retrofit.MainApi
+import com.example.fruitfolio.retrofit.NeuralNetworkRetrofitService
 import com.example.fruitfolio.retrofit.RetrofitService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

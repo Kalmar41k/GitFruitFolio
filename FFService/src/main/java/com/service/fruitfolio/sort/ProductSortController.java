@@ -35,6 +35,11 @@ public class ProductSortController {
         return productSortService.findById(id);
     }
 
+    @PostMapping("/byDescription")
+    public ProductSort findByDescription(@RequestBody ProductDescriptionRequest descriptionRequest) {
+        return productSortService.findByDesctiption(descriptionRequest);
+    }
+
     @GetMapping("/byProductClass/{productClass}")
     public List<ProductSort> findByProductClass(@PathVariable("productClass") String productClass) {
         return productSortService.findByProductClass(productClass);
