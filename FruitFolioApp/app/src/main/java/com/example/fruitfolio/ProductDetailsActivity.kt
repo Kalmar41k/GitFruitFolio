@@ -142,6 +142,8 @@ class ProductDetailsActivity : AppCompatActivity() {
                     comments = response.body()
                     runOnUiThread {
                         binding.recyclerViewComments.adapter = CommentsAdapter(comments!!)
+                        val updatedComs = "Comments: ${comments!!.size}"
+                        binding.textViewComments.text = updatedComs
                     }
                 } else {
                     auth()

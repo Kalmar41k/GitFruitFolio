@@ -7,16 +7,6 @@
     android:background="@drawable/background">
 
     <ImageView
-        android:id="@+id/mImgView"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/camera"
-        app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints"
-        android:contentDescription="photo" />
-
-    <ImageView
         android:id="@+id/cameraImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

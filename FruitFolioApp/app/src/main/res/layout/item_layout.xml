@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/item_background"
     android:orientation="horizontal"
     android:padding="16dp">
 
@@ -13,19 +14,19 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textViewProductSort"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            android:textStyle="bold"/>
-
-        <TextView
             android:id="@+id/textViewProductType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:textSize="12sp"/>
+            android:textColor="#147049"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/textViewProductSort"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#147049"
+            android:textSize="14sp"/>
 
     </LinearLayout>
 
@@ -34,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
-        android:textColor="@android:color/black"
+        android:textColor="#147049"
         android:textSize="18sp"
         android:textStyle="bold" />
 

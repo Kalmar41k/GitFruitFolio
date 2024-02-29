@@ -29,7 +29,11 @@ class ProductsActivity : AppCompatActivity() {
         val productListType = object : TypeToken<List<Product>>() {}.type
         productsList = Gson().fromJson(productsJson, productListType)
         Log.d("ProductsActivity", "$productsList")
-        binding.recyclerViewProducts.layoutManager = LinearLayoutManager(this)
+
+        val layoutManager = LinearLayoutManager(this)
+        layoutManager.reverseLayout = true
+        layoutManager.stackFromEnd = true
+        binding.recyclerViewProducts.layoutManager = layoutManager
         if (productsList != null) {
             binding.recyclerViewProducts.adapter = ProductsAdapter(productsList!!) {
                 product -> navigateToProductDetails(product)
