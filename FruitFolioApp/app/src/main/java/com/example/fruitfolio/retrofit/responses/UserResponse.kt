@@ -1,4 +1,4 @@
-package com.example.fruitfolio.retrofit
+package com.example.fruitfolio.retrofit.responses
 
 import java.io.Serializable
 

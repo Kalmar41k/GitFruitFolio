@@ -1,4 +1,4 @@
-package com.example.fruitfolio.retrofit
+package com.example.fruitfolio.retrofit.responses
 
 data class CommentResponse(
     val id: Int,

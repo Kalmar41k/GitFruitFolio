@@ -12,9 +12,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.fruitfolio.databinding.ProductClassesBinding
 import com.example.fruitfolio.retrofit.MainApi
 import com.example.fruitfolio.retrofit.NeuralNetworkRetrofitService
-import com.example.fruitfolio.retrofit.PredictResponse
+import com.example.fruitfolio.retrofit.responses.PredictResponse
 import com.example.fruitfolio.retrofit.RetrofitService
-import com.example.fruitfolio.retrofit.UserResponse
+import com.example.fruitfolio.retrofit.responses.UserResponse
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
@@ -23,14 +23,12 @@ import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.Response
 import java.io.File
 import java.net.HttpURLConnection
 
 class ProductClassesActivity : AppCompatActivity() {
 
     private lateinit var binding: ProductClassesBinding
-    private lateinit var uri: Uri
 
     private var userResponse: UserResponse? = null
 
@@ -44,6 +42,8 @@ class ProductClassesActivity : AppCompatActivity() {
         binding.fruitsTextView.setOnClickListener { getProducts(ProductClasses.Fruit) }
         binding.vegetablesTextView.setOnClickListener { getProducts(ProductClasses.Vegetable) }
         binding.berriesTextView.setOnClickListener { getProducts(ProductClasses.Berry) }
+
+        binding.logOutView.setOnClickListener { auth() }
 
         binding.cameraImageView.setOnClickListener {
             ImagePicker.with(this@ProductClassesActivity)
@@ -75,12 +75,24 @@ class ProductClassesActivity : AppCompatActivity() {
                 try {
 
                     val requestFile = imageFile.asRequestBody("image/*".toMediaTypeOrNull())
-                    val body = MultipartBody.Part.createFormData("image", imageFile.name, requestFile)
+                    val body = MultipartBody.Part.createFormData(
+                        "image", imageFile.name, requestFile)
                     val response = NeuralNetworkRetrofitService.retrofit.create(MainApi::class.java)
                         .uploadImage(body)
                     if (response.isSuccessful) {
                         val predict = response.body()
-                        predict?.let { it1 -> findProductByDescription(it1) }
+                        if (predict!!.description == "Product did not found!") {
+                            runOnUiThread {
+                                AlertDialog.Builder(this@ProductClassesActivity)
+                                    .setTitle("Product Not Found")
+                                    .setMessage("The product you are looking for was not found.")
+                                    .setPositiveButton("OK") { dialog, _ ->
+                                        dialog.dismiss()
+                                    }
+                                    .show()
+                            }
+                        }
+                        findProductByDescription(predict)
                         Log.d("ProductClassesActivity", "Predict: $predict")
                     } else {
                         runOnUiThread {
@@ -108,7 +120,9 @@ class ProductClassesActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     val product = response.body()
                     product?.let {
-                        val intent = Intent(this@ProductClassesActivity, ProductDetailsActivity::class.java)
+                        val intent = Intent(
+                            this@ProductClassesActivity,
+                            ProductDetailsActivity::class.java)
                         intent.putExtra("userResponse", userResponse)
                         intent.putExtra("product", product)
                         startActivity(intent)
@@ -156,13 +170,16 @@ class ProductClassesActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val response = RetrofitService.retrofit.create(MainApi::class.java)
-                    .getProducts(productClass.name, "Bearer ${userResponse?.accessToken}")
+                    .getProducts(productClass.name,
+                        "Bearer ${userResponse?.accessToken}")
                 if (response.isSuccessful) {
                     val productsList = response.body()
                     Log.d("ProductClassesActivity", "Products: $productsList")
                     productsList?.let {
                         val productsJson = Gson().toJson(productsList)
-                        val intent = Intent(this@ProductClassesActivity, ProductsActivity::class.java)
+                        val intent = Intent(
+                            this@ProductClassesActivity,
+                            ProductsActivity::class.java)
                         intent.putExtra("userResponse", userResponse)
                         intent.putExtra("productsJson", productsJson)
                         startActivity(intent)

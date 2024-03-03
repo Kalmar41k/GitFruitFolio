@@ -1,10 +1,10 @@
-package com.example.fruitfolio
+package com.example.fruitfolio.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fruitfolio.databinding.CommentItemBinding
-import com.example.fruitfolio.retrofit.CommentResponse
+import com.example.fruitfolio.retrofit.responses.CommentResponse
 import java.text.SimpleDateFormat
 import java.util.Locale
 

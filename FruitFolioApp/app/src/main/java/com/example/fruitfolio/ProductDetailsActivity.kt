@@ -8,16 +8,18 @@ import android.util.Log
 import android.view.inputmethod.EditorInfo
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.fruitfolio.adapters.CommentsAdapter
+import com.example.fruitfolio.adapters.MyCommentsAdapter
 import com.example.fruitfolio.databinding.ProductDetailsBinding
-import com.example.fruitfolio.retrofit.CommentRequest
-import com.example.fruitfolio.retrofit.CommentResponse
-import com.example.fruitfolio.retrofit.GradeRequest
+import com.example.fruitfolio.retrofit.requests.CommentRequest
+import com.example.fruitfolio.retrofit.responses.CommentResponse
+import com.example.fruitfolio.retrofit.requests.GradeRequest
 import com.example.fruitfolio.retrofit.MainApi
-import com.example.fruitfolio.retrofit.MyCommentRequest
-import com.example.fruitfolio.retrofit.MyCommentResponse
-import com.example.fruitfolio.retrofit.Product
+import com.example.fruitfolio.retrofit.requests.MyCommentRequest
+import com.example.fruitfolio.retrofit.responses.MyCommentResponse
+import com.example.fruitfolio.retrofit.responses.Product
 import com.example.fruitfolio.retrofit.RetrofitService
-import com.example.fruitfolio.retrofit.UserResponse
+import com.example.fruitfolio.retrofit.responses.UserResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -59,7 +61,8 @@ class ProductDetailsActivity : AppCompatActivity() {
                 binding.writeCommentEditText.error = "Write some text!"
             }
             else {
-                val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE)
+                        as InputMethodManager
                 inputMethodManager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
                 addComment()
             }
@@ -72,7 +75,8 @@ class ProductDetailsActivity : AppCompatActivity() {
                     binding.writeCommentEditText.error = "Write some text!"
                 }
                 else {
-                    val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE)
+                            as InputMethodManager
                     inputMethodManager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
                     addComment()
                 }
@@ -159,7 +163,8 @@ class ProductDetailsActivity : AppCompatActivity() {
             try {
                 val myCommentRequest = MyCommentRequest(product!!.id)
                 val response = RetrofitService.retrofit.create(MainApi::class.java)
-                    .getMyComments(myCommentRequest, "Bearer ${userResponse?.accessToken}")
+                    .getMyComments(myCommentRequest,
+                        "Bearer ${userResponse?.accessToken}")
                 if (response.isSuccessful) {
                     myComments = response.body()
                     runOnUiThread {
@@ -183,7 +188,8 @@ class ProductDetailsActivity : AppCompatActivity() {
                 val text = binding.writeCommentEditText.text.toString()
                 val commentRequest = CommentRequest(product!!.id, text)
                 val response = RetrofitService.retrofit.create(MainApi::class.java)
-                    .createComment(commentRequest, "Bearer ${userResponse?.accessToken}")
+                    .createComment(commentRequest,
+                        "Bearer ${userResponse?.accessToken}")
                 if (response.isSuccessful) {
                     runOnUiThread {
                         getComments()
@@ -203,7 +209,8 @@ class ProductDetailsActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val response = RetrofitService.retrofit.create(MainApi::class.java)
-                    .deleteMyComment(comment.id, "Bearer ${userResponse?.accessToken}")
+                    .deleteMyComment(comment.id,
+                        "Bearer ${userResponse?.accessToken}")
                 if (response.isSuccessful) {
                     runOnUiThread {
                         getMyComments()
@@ -223,7 +230,8 @@ class ProductDetailsActivity : AppCompatActivity() {
             try {
                 val gradeRequest = GradeRequest(productSortId, grade)
                 val response = RetrofitService.retrofit.create(MainApi::class.java)
-                    .createGrade(gradeRequest, "Bearer ${userResponse?.accessToken}")
+                    .createGrade(gradeRequest,
+                        "Bearer ${userResponse?.accessToken}")
                 if (response.isSuccessful) {
                     val meanGrade = response.body()
                     Log.d("ProductDetailsActivity", "$meanGrade")

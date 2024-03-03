@@ -1,12 +1,13 @@
-package com.example.fruitfolio
+package com.example.fruitfolio.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.fruitfolio.retrofit.Product
+import com.example.fruitfolio.retrofit.responses.Product
 import com.example.fruitfolio.databinding.ItemLayoutBinding
 
-class ProductsAdapter(private var productsList: List<Product>, private val onItemClick: (Product) -> Unit) :
+class ProductsAdapter(private var productsList: List<Product>, private val onItemClick:
+    (Product) -> Unit) :
     RecyclerView.Adapter<ProductsAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: ItemLayoutBinding) : RecyclerView.ViewHolder(binding.root) {

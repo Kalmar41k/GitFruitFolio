@@ -1,7 +1,16 @@
 package com.example.fruitfolio.retrofit
 
+import com.example.fruitfolio.retrofit.requests.AuthenticateRequest
+import com.example.fruitfolio.retrofit.requests.CommentRequest
+import com.example.fruitfolio.retrofit.requests.GradeRequest
+import com.example.fruitfolio.retrofit.requests.MyCommentRequest
+import com.example.fruitfolio.retrofit.requests.RegisterRequest
+import com.example.fruitfolio.retrofit.responses.CommentResponse
+import com.example.fruitfolio.retrofit.responses.MyCommentResponse
+import com.example.fruitfolio.retrofit.responses.PredictResponse
+import com.example.fruitfolio.retrofit.responses.Product
+import com.example.fruitfolio.retrofit.responses.UserResponse
 import okhttp3.MultipartBody
-import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE

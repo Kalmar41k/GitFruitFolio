@@ -1,17 +1,15 @@
-package com.example.fruitfolio
+package com.example.fruitfolio.adapters
 
-import android.app.AlertDialog
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fruitfolio.databinding.MyCommentItemBinding
-import com.example.fruitfolio.retrofit.MyCommentResponse
-import com.example.fruitfolio.retrofit.Product
+import com.example.fruitfolio.retrofit.responses.MyCommentResponse
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class MyCommentsAdapter(private var myCommentsList: List<MyCommentResponse>, private val onItemClick: (MyCommentResponse) -> Unit) :
+class MyCommentsAdapter(private var myCommentsList: List<MyCommentResponse>, private val onItemClick:
+    (MyCommentResponse) -> Unit) :
     RecyclerView.Adapter<MyCommentsAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: MyCommentItemBinding) : RecyclerView.ViewHolder(binding.root) {

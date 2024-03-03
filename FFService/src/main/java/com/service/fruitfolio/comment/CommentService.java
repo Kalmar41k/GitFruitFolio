@@ -25,7 +25,8 @@ public class CommentService {
         var user = (User) ((UsernamePasswordAuthenticationToken) connectedUser).getPrincipal();
         Comment comment = new Comment();
 
-        Optional<ProductSort> productSort = productSortRepository.findById(commentRequest.getProductSortId());
+        Optional<ProductSort> productSort = productSortRepository.findById(
+                commentRequest.getProductSortId());
         if (productSort.isEmpty()) {
             throw new IllegalStateException("Product Sort is not found");
         }
@@ -43,13 +44,10 @@ public class CommentService {
         return sortCommentsResponse;
     }
 
-    public List<Comment> findAll() {
-        return commentRepository.findAll();
-    }
-
     public List<MyCommentsResponse> getMyComments(MyCommentsRequest myCommentsRequest, Principal connectedUser) {
         var user = (User) ((UsernamePasswordAuthenticationToken) connectedUser).getPrincipal();
-        Optional<ProductSort> productSort = productSortRepository.findById(myCommentsRequest.getProductSortId());
+        Optional<ProductSort> productSort = productSortRepository.findById(
+                myCommentsRequest.getProductSortId());
         if (productSort.isEmpty()) {
             throw new IllegalStateException("Product Sort is not found!");
         }

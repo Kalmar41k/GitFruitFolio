@@ -5,9 +5,10 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.fruitfolio.adapters.ProductsAdapter
 import com.example.fruitfolio.databinding.ProductsBinding
-import com.example.fruitfolio.retrofit.Product
-import com.example.fruitfolio.retrofit.UserResponse
+import com.example.fruitfolio.retrofit.responses.Product
+import com.example.fruitfolio.retrofit.responses.UserResponse
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 

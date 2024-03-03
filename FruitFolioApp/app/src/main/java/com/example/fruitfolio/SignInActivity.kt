@@ -5,9 +5,8 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.fruitfolio.databinding.SignInBinding
-import com.example.fruitfolio.retrofit.AuthenticateRequest
+import com.example.fruitfolio.retrofit.requests.AuthenticateRequest
 import com.example.fruitfolio.retrofit.MainApi
-import com.example.fruitfolio.retrofit.NeuralNetworkRetrofitService
 import com.example.fruitfolio.retrofit.RetrofitService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -46,7 +45,8 @@ class SignInActivity : AppCompatActivity() {
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val response = RetrofitService.retrofit.create(MainApi::class.java).authenticate(authenticateRequest)
+                val response = RetrofitService.retrofit.create(MainApi::class.java)
+                    .authenticate(authenticateRequest)
                 if (response.isSuccessful) {
                     val userResponse = response.body()
                     Log.d("SignInActivity", "UserResponse: $userResponse")

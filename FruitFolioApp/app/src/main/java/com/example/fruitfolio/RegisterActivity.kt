@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import com.example.fruitfolio.databinding.RegisterBinding
 import com.example.fruitfolio.retrofit.MainApi
-import com.example.fruitfolio.retrofit.RegisterRequest
+import com.example.fruitfolio.retrofit.requests.RegisterRequest
 import com.example.fruitfolio.retrofit.RetrofitService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -28,7 +28,8 @@ class RegisterActivity : AppCompatActivity() {
             val email = binding.emailText.text.toString()
             val password = binding.textPassword.text.toString()
 
-            if (firstName.isNotEmpty() && lastName.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty()) {
+            if (firstName.isNotEmpty() && lastName.isNotEmpty() && email.isNotEmpty()
+                && password.isNotEmpty()) {
                 val registerRequest = RegisterRequest(firstName, lastName, email, password)
                 registerUser(registerRequest)
             } else {
@@ -52,7 +53,8 @@ class RegisterActivity : AppCompatActivity() {
     private fun registerUser(registerRequest: RegisterRequest) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val response = RetrofitService.retrofit.create(MainApi::class.java).register(registerRequest)
+                val response = RetrofitService.retrofit.create(MainApi::class.java)
+                    .register(registerRequest)
                 if (response.isSuccessful) {
                     val userResponse = response.body()
                     Log.d("RegisterActivity", "UserResponse: $userResponse")

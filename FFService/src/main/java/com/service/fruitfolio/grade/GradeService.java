@@ -24,14 +24,16 @@ public class GradeService {
         var user = (User) ((UsernamePasswordAuthenticationToken) connectedUser).getPrincipal();
 
         Grade grade = new Grade();
-        Optional<Grade> checkGrade = Optional.ofNullable(gradeRepository.findByUserIdAndProductSortId(user.getId(), gradeRequest.getProductSortId()));
+        Optional<Grade> checkGrade = Optional.ofNullable(gradeRepository.findByUserIdAndProductSortId(
+                user.getId(), gradeRequest.getProductSortId()));
         if (checkGrade.isPresent()) {
             grade = checkGrade.orElse(null);
             grade.setId(checkGrade.get().getId());
             grade.setGrade(gradeRequest.getGrade());
             gradeRepository.save(grade);
 
-            Optional<ProductSort> productSort = productSortRepository.findById(gradeRequest.getProductSortId());
+            Optional<ProductSort> productSort = productSortRepository.findById(
+                    gradeRequest.getProductSortId());
             if (productSort.isEmpty()) {
                 throw new IllegalStateException("Product Sort is not found!");
             }
@@ -49,7 +51,8 @@ public class GradeService {
         }
         else {
 
-            Optional<ProductSort> productSort = productSortRepository.findById(gradeRequest.getProductSortId());
+            Optional<ProductSort> productSort = productSortRepository.findById(
+                    gradeRequest.getProductSortId());
             if (productSort.isEmpty()) {
                 throw new IllegalStateException("Product Sort is not found!");
             }
