@@ -21,60 +21,35 @@ public class GradeService {
 
     public Double create(GradeRequest gradeRequest, Principal connectedUser) {
 
-        var user = (User) ((UsernamePasswordAuthenticationToken) connectedUser).getPrincipal();
+        User user = (User) ((UsernamePasswordAuthenticationToken) connectedUser).getPrincipal();
+
+        Optional<ProductSort> productSort = productSortRepository.findById(gradeRequest.getProductSortId());
+        if (productSort.isEmpty()) {
+            throw new IllegalStateException("Product Sort is not found!");
+        }
 
         Grade grade = new Grade();
-        Optional<Grade> checkGrade = Optional.ofNullable(gradeRepository.findByUserIdAndProductSortId(
+        Optional<Grade> updateGrade = Optional.ofNullable(gradeRepository.findByUserIdAndProductSortId(
                 user.getId(), gradeRequest.getProductSortId()));
-        if (checkGrade.isPresent()) {
-            grade = checkGrade.orElse(null);
-            grade.setId(checkGrade.get().getId());
-            grade.setGrade(gradeRequest.getGrade());
-            gradeRepository.save(grade);
-
-            Optional<ProductSort> productSort = productSortRepository.findById(
-                    gradeRequest.getProductSortId());
-            if (productSort.isEmpty()) {
-                throw new IllegalStateException("Product Sort is not found!");
-            }
-            ProductSort productSort1;
-            productSort1 = productSort.orElse(null);
-            List<Grade> grades = getSortGrades(productSort.orElse(null));
-            Integer sumGrades = 0;
-            for (Grade grade1 : grades) {
-                sumGrades += grade1.getGrade();
-            }
-            Double meanGrade = (double) sumGrades / grades.size();
-            productSort1.setMeanGrade(meanGrade);
-            productSortRepository.save(productSort1);
-            return meanGrade;
+        if (updateGrade.isPresent()) {
+            updateGrade.get().setGrade(gradeRequest.getGrade());
+            gradeRepository.save(updateGrade.orElse(null));
         }
+
         else {
-
-            Optional<ProductSort> productSort = productSortRepository.findById(
-                    gradeRequest.getProductSortId());
-            if (productSort.isEmpty()) {
-                throw new IllegalStateException("Product Sort is not found!");
-            }
             grade.setUser(user);
-            grade.setProductSort(productSort.orElse(null));
+            grade.setProductSort(productSort.get());
             grade.setGrade(gradeRequest.getGrade());
             gradeRepository.save(grade);
-
-            ProductSort productSort1;
-            productSort1 = productSort.orElse(null);
-            List<Grade> grades = getSortGrades(productSort.orElse(null));
-            Integer sumGrades = 0;
-            for (Grade grade1 : grades) {
-                sumGrades += grade1.getGrade();
-            }
-            Double meanGrade = (double) sumGrades / grades.size();
-            productSort1.setMeanGrade(meanGrade);
-            productSortRepository.save(productSort1);
-            return meanGrade;
         }
 
+        List<Grade> grades = getSortGrades(productSort.get());
+        Double meanGrade = grades.stream().mapToInt(Grade::getGrade).average().orElse(0);
+        productSort.get().setMeanGrade(meanGrade);
+        productSortRepository.save(productSort.get());
+        return meanGrade;
     }
+
 
     public List<Grade> findAll() {
         return gradeRepository.findAll();

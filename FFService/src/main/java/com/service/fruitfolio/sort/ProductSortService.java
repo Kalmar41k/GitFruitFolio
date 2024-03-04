@@ -28,23 +28,28 @@ public class ProductSortService {
     }
 
     public List<SortCommentsResponse> getSortCommentsById(Integer id) {
-        Optional<ProductSort> productSort = productSortRepository.findById(id);
-        if (productSort.isEmpty()) {
+        Optional<ProductSort> productSortOptional = productSortRepository.findById(id);
+        if (productSortOptional.isEmpty()) {
             throw new IllegalStateException("Product Sort is not found!");
         }
-        List<Comment> comments = commentService.getSortComments(productSort.orElse(null));
+        ProductSort productSort = productSortOptional.get();
+
+        List<Comment> comments = commentService.getSortComments(productSort);
         List<SortCommentsResponse> sortComments = new ArrayList<>();
 
         for (Comment comment : comments) {
-            Optional<User> user = Optional.ofNullable(comment.getUser());
-            user = userRepository.findById(user.get().getId());
-            SortCommentsResponse sortCommentsResponse = new SortCommentsResponse();
-            sortCommentsResponse.setId((comment.getId()));
-            sortCommentsResponse.setFirstname(user.get().getFirstname());
-            sortCommentsResponse.setLastname(user.get().getLastname());
-            sortCommentsResponse.setText(comment.getText());
-            sortCommentsResponse.setCreateDate(comment.getCreateDate());
-            sortComments.add(sortCommentsResponse);
+            User user = comment.getUser();
+            Optional<User> userOptional = userRepository.findById(user.getId());
+            if (userOptional.isPresent()) {
+                user = userOptional.get();
+                SortCommentsResponse sortCommentsResponse = new SortCommentsResponse();
+                sortCommentsResponse.setId(comment.getId());
+                sortCommentsResponse.setFirstname(user.getFirstname());
+                sortCommentsResponse.setLastname(user.getLastname());
+                sortCommentsResponse.setText(comment.getText());
+                sortCommentsResponse.setCreateDate(comment.getCreateDate());
+                sortComments.add(sortCommentsResponse);
+            }
         }
         return sortComments;
     }
