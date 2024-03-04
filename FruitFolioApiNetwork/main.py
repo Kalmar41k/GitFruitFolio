@@ -6,7 +6,7 @@ import tensorflow as tf
 app = Flask(__name__)
 model = tf.keras.models.load_model("fruits_360_model.h5")
 
-with open("labels.txt") as f:
+with open("labelModel.txt") as f:
     content = f.readlines()
 label = []
 for i in content:
@@ -25,6 +25,13 @@ def predict():
     input_arr = np.array([input_arr])
     predictions = model.predict(input_arr)
     predicted_class = np.argmax(predictions)
+    confidence = np.max(predictions)
+    print('Predict: ', label[predicted_class])
+    print(confidence)
+
+    if confidence < 0.6:
+        return jsonify({'description': 'Product did not found!'})
+
     return jsonify({'description': label[predicted_class]})
 
 
